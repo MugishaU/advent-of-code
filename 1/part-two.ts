@@ -96,9 +96,6 @@ function calibrationValue(line: string) {
     }
   });
 
-  // console.log(values);
-  // console.log(convertedValues);
-
   if (convertedValues.length > 1) {
     const x = convertedValues.shift();
     const y = convertedValues.pop();
@@ -111,24 +108,20 @@ function calibrationValue(line: string) {
 
 async function handleInput(filename: string) {
   try {
-    let total = 0;
-    let lines = 0;
-    let count = 1;
     const rl = rd.createInterface({
       input: fs.createReadStream(filename),
       crlfDelay: Infinity
     });
 
+    let total = 0;
+
     rl.on('line', line => {
       const lineAmount = calibrationValue(line);
-      total = total + lineAmount;
-      count++;
+      total += lineAmount;
     });
 
-    console.log(total);
     await events.once(rl, 'close');
     return total;
-    console.log(lines);
   } catch (err) {
     console.error(err);
   }
