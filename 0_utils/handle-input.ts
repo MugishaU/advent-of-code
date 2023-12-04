@@ -2,7 +2,7 @@ import events from 'events';
 import * as fs from 'fs';
 import * as rd from 'readline';
 
-export async function handleInput(filename: string) {
+async function handleInput(filename: string) {
   try {
     const rl = rd.createInterface({
       input: fs.createReadStream(filename),

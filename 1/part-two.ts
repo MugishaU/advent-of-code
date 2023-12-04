@@ -106,7 +106,7 @@ function calibrationValue(line: string) {
   return Number(convertedValues[0] + convertedValues[0]);
 }
 
-async function handleInput(filename: string) {
+export async function handleInput(filename: string) {
   try {
     const rl = rd.createInterface({
       input: fs.createReadStream(filename),
@@ -124,6 +124,7 @@ async function handleInput(filename: string) {
     return total;
   } catch (err) {
     console.error(err);
+    throw new Error((err as Error).message);
   }
 }
 
