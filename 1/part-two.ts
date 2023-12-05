@@ -128,4 +128,4 @@ export async function handleInput(filename: string) {
   }
 }
 
-handleInput('1/input.txt').then(res => console.log(res));
+// handleInput('1/input.txt').then(res => console.log(res));
