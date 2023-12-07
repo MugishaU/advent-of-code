@@ -35,7 +35,7 @@ function calculate(engine: string[][]) {
 
     for (const [itemIdx, item] of row.entries()) {
       // Loop through each item in a row
-      if (isNum(item) && itemIdx < row.length - 1) {
+      if (isNum(item)) {
         // numberToggle = true; // Toggle switch to get total number
         tempNumber += item; // Add first digit to tempNumber
 
@@ -66,43 +66,21 @@ function calculate(engine: string[][]) {
 
         const strIdxs = idxs.map(idx => idx.join(',')); // Map to string to make set work better
         strIdxs.forEach(strIdx => adjIdxs.add(strIdx)); // Add each value to set
-      } else if (isNum(item) && itemIdx === row.length - 1) {
-        // Handle case when number at end of row
-        tempNumber += item;
 
-        const maybeIdxs = [
-          [rowIdx - 1, itemIdx - 1],
-          [rowIdx - 1, itemIdx],
-          [rowIdx - 1, itemIdx + 1],
-          [rowIdx, itemIdx - 1],
-          [rowIdx, itemIdx + 1],
-          [rowIdx + 1, itemIdx - 1],
-          [rowIdx + 1, itemIdx],
-          [rowIdx + 1, itemIdx + 1]
-        ];
-
-        const validIdxs = maybeIdxs.filter(
-          ([maybeRow, maybeItem]) =>
-            maybeRow >= 0 &&
-            maybeRow < engine.length &&
-            maybeItem >= 0 &&
-            maybeItem < row.length
-        );
-
-        const strIdxs = validIdxs.map(idx => idx.join(',')); // Map to string to make set work better
-        strIdxs.forEach(strIdx => adjIdxs.add(strIdx));
-
-        const idxs = Array.from(adjIdxs);
-        const adjCheck = idxs.map(idx => {
-          const [x, y] = idx.split(',').map(i => Number(i));
-          return !isNum(engine[x][y]) && engine[x][y] !== '.';
-        });
-        if (adjCheck.includes(true)) {
-          const validNum = Number(tempNumber);
-          total += Number(validNum);
+        // Edge case, number is at the end of a row
+        if (itemIdx === row.length - 1) {
+          const idxs = Array.from(adjIdxs);
+          const adjCheck = idxs.map(idx => {
+            const [x, y] = idx.split(',').map(i => Number(i));
+            return !isNum(engine[x][y]) && engine[x][y] !== '.';
+          });
+          if (adjCheck.includes(true)) {
+            const validNum = Number(tempNumber);
+            total += Number(validNum);
+          }
+          tempNumber = '';
+          adjIdxs.clear();
         }
-        tempNumber = '';
-        adjIdxs.clear();
       } else if (tempNumber.length > 0) {
         const idxs = Array.from(adjIdxs);
         const adjCheck = idxs.map(idx => {
