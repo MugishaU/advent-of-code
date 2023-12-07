@@ -1,10 +1,7 @@
 import events from 'events';
 import * as fs from 'fs';
 import * as rd from 'readline';
-
-function isNum(letter: string) {
-  return !isNaN(Number(letter));
-}
+import { isNum } from '../0_utils/isNum';
 
 function calibrationValue(line: string) {
   const values: string[] = [];
