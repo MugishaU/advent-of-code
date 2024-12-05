@@ -17,7 +17,6 @@ const readFromCSV = async (): Promise<{left: number[], right: number[]}> => {
                 left.push(Number(l.trim()))
                 right.push(Number(r.trim()))
             })
-            
         })
         .on('end', () => resolve({left, right}))
         .on('error', error => reject(error));

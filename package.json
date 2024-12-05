@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "ts-node"
   },
   "dependencies": {
     "csv-parser": "^3.0.0",
