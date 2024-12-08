@@ -9,12 +9,12 @@ const trigger = async () => {
     line.split(" ").map((num) => Number(num))
   );
 
-  const res = rows.map(checkReport).filter((res) => res === true);
+  const res = rows.map(checkReportDampener).filter((res) => res === true);
   console.log(res.length);
 };
 
 const checkReport = (report: number[]): boolean => {
-  const isDecreasing = calcIsDecreasing(report).isDecreasing;
+  const isDecreasing = calcIsDecreasing(report);
 
   if (isNil(isDecreasing)) {
     return false;
@@ -42,12 +42,26 @@ const checkReport = (report: number[]): boolean => {
   return true;
 };
 
-const calcIsDecreasing = (
-  report: number[]
-): { isDecreasing: boolean | undefined; dampener: boolean } => {
-  if (report[0] - report[1] === 0)
-    return { isDecreasing: undefined, dampener: true };
-  return { isDecreasing: report[0] - report[1] > 0, dampener: true };
+const checkReportDampener = (report: number[]): boolean => {
+  if (checkReport(report)) {
+    return true;
+  }
+
+  for (let i = 0; i < report.length; i++) {
+    const trimmedReport = report.slice();
+    trimmedReport.splice(i, 1);
+
+    if (checkReport(trimmedReport)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const calcIsDecreasing = (report: number[]): boolean | undefined => {
+  if (report[0] - report[1] === 0) return undefined;
+  return report[0] - report[1] > 0;
 };
 
 void trigger();
