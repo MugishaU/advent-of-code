@@ -25,7 +25,7 @@ const crossword = async (filename: string) => {
 
   input.forEach((row, r) => {
     row.map((column, c) => {
-      total += findXmas(column, r, c, input);
+      total += findXmas2(column, r, c, input);
     });
   });
 
@@ -143,6 +143,36 @@ const findXmas = (
     grid[row + 1][column - 1] == 'M' &&
     grid[row + 2][column - 2] == 'A' &&
     grid[row + 3][column - 3] == 'S'
+  ) {
+    count++;
+  }
+
+  return count;
+};
+
+const findXmas2 = (
+  startingLetter: string,
+  row: number,
+  column: number,
+  grid: string[][]
+): number => {
+  let count = 0;
+
+  if (startingLetter !== 'A') return count;
+
+  const northBound = row - 1 >= 0;
+  const southBound = row + 1 < grid.length;
+  const westBound = column - 1 >= 0;
+  const eastBound = column + 1 < grid[0].length;
+  const allBounds = northBound && southBound && westBound && eastBound;
+
+  if (!allBounds) return count;
+
+  if (
+    ((grid[row - 1][column + 1] == 'S' && grid[row + 1][column - 1] == 'M') ||
+      (grid[row - 1][column + 1] == 'M' && grid[row + 1][column - 1] == 'S')) &&
+    ((grid[row - 1][column - 1] == 'S' && grid[row + 1][column + 1] == 'M') ||
+      (grid[row - 1][column - 1] == 'M' && grid[row + 1][column + 1] == 'S'))
   ) {
     count++;
   }
